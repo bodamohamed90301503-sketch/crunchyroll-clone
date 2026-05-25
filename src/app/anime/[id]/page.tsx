@@ -1,12 +1,14 @@
 import { getAnimeById } from "../../../api/anime";
 import CommentsClient from "./CommentsClient";
 
-export default async function Page({
-    params,
-}: {
-    params: { id: string };
-}) {
-    const anime = await getAnimeById(Number(params.id));
+export default async function Page(
+    props: {
+        params: Promise<{ id: string }>;
+    }
+) {
+    const { id } = await props.params;
+
+    const anime = await getAnimeById(Number(id));
 
     if (!anime) {
         return <div className="text-white">Not found</div>;
