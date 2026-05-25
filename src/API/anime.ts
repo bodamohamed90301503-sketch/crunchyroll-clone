@@ -1,5 +1,5 @@
 export async function getAnime() {
-  const query = `
+    const query = `
   {
     Page(page: 1, perPage: 20) {
       media(type: ANIME, sort: POPULARITY_DESC) {
@@ -13,18 +13,18 @@ export async function getAnime() {
   }
   `;
 
-  const res = await fetch("https://graphql.anilist.co", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query }),
-  });
+    const res = await fetch("https://graphql.anilist.co", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+    });
 
-  const data = await res.json();
-  return data?.data?.Page?.media || [];
+    const data = await res.json();
+    return data?.data?.Page?.media || [];
 }
 
-export async function getAnimeById(id) {
-  const query = `
+export async function getAnimeById(id: number) {
+    const query = `
   query ($id: Int) {
     Media(id: $id, type: ANIME) {
       id
@@ -38,12 +38,12 @@ export async function getAnimeById(id) {
   }
   `;
 
-  const res = await fetch("https://graphql.anilist.co", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables: { id } }),
-  });
+    const res = await fetch("https://graphql.anilist.co", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, variables: { id } }),
+    });
 
-  const data = await res.json();
-  return data?.data?.Media;
+    const data = await res.json();
+    return data?.data?.Media;
 }
