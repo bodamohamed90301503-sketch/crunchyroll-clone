@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { getAnime, type Anime } from "@/api/anime";
+import { getAnime, type Anime } from "../api/anime";
 
 export default function AnimeCarousel() {
     const [anime, setAnime] = useState<Anime[]>([]);
