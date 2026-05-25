@@ -6,19 +6,19 @@ export default async function Page({
 }: {
     params: { id: string };
 }) {
-    const animeId = Number(params.id);
+    const anime = await getAnimeById(Number(params.id));
 
-    const anime = await getAnimeById(animeId);
+    if (!anime) return <div className="text-white">Not found</div>;
 
     return (
         <div className="text-white p-6">
             <h1>{anime.title.english || anime.title.romaji}</h1>
 
-            <img src={anime.coverImage.large} />
+            <img src={anime.coverImage.large} alt={anime.title.romaji} />
 
             <p dangerouslySetInnerHTML={{ __html: anime.description }} />
 
-            <CommentsClient animeId={animeId} />
+            <CommentsClient animeId={anime.id} />
         </div>
     );
 }
