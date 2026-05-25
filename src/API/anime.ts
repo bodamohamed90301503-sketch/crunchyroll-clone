@@ -1,4 +1,4 @@
-type Anime = {
+export type Anime = {
     id: number;
     title: {
         english: string | null;
@@ -7,22 +7,23 @@ type Anime = {
     coverImage: {
         large: string;
     };
+    description?: string;
 };
 
 export async function getAnime(): Promise<Anime[]> {
     const query = `
-    {
-      Page(page: 1, perPage: 20) {
-        media(type: ANIME, sort: POPULARITY_DESC) {
-          id
-          title { english romaji }
-          averageScore
-          episodes
-          coverImage { large }
-        }
+  {
+    Page(page: 1, perPage: 20) {
+      media(type: ANIME, sort: POPULARITY_DESC) {
+        id
+        title { english romaji }
+        averageScore
+        episodes
+        coverImage { large }
       }
     }
-    `;
+  }
+  `;
 
     const res = await fetch("https://graphql.anilist.co", {
         method: "POST",
@@ -36,20 +37,20 @@ export async function getAnime(): Promise<Anime[]> {
     return data?.data?.Page?.media ?? [];
 }
 
-export async function getAnimeById(id: number): Promise<any> {
+export async function getAnimeById(id: number): Promise<Anime | null> {
     const query = `
-    query ($id: Int) {
-      Media(id: $id, type: ANIME) {
-        id
-        title { english romaji }
-        description
-        averageScore
-        episodes
-        genres
-        coverImage { large }
-      }
+  query ($id: Int) {
+    Media(id: $id, type: ANIME) {
+      id
+      title { english romaji }
+      description
+      averageScore
+      episodes
+      genres
+      coverImage { large }
     }
-    `;
+  }
+  `;
 
     const res = await fetch("https://graphql.anilist.co", {
         method: "POST",

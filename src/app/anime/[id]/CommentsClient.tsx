@@ -3,9 +3,15 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
+type Comment = {
+    id: number;
+    comment: string;
+    user_name: string;
+};
+
 export default function CommentsClient({ animeId }: { animeId: number }) {
     const [comment, setComment] = useState("");
-    const [comments, setComments] = useState<any[]>([]);
+    const [comments, setComments] = useState<Comment[]>([]);
     const [loading, setLoading] = useState(false);
 
     async function fetchComments() {
@@ -16,7 +22,7 @@ export default function CommentsClient({ animeId }: { animeId: number }) {
             .order("created_at", { ascending: false });
 
         if (error) {
-            console.log("FETCH ERROR:", error.message);
+            console.log(error.message);
             return;
         }
 
@@ -37,8 +43,7 @@ export default function CommentsClient({ animeId }: { animeId: number }) {
         setLoading(false);
 
         if (error) {
-            console.log("INSERT ERROR:", error.message);
-            alert("Error: " + error.message);
+            console.log(error.message);
             return;
         }
 
@@ -47,7 +52,7 @@ export default function CommentsClient({ animeId }: { animeId: number }) {
     }
 
     useEffect(() => {
-        if (animeId) fetchComments();
+        fetchComments();
     }, [animeId]);
 
     return (
